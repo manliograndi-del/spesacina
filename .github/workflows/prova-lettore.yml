@@ -1,0 +1,39 @@
+name: Prova lettore
+
+on:
+  workflow_dispatch:
+
+jobs:
+  leggi:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Installa pymupdf e tesseract
+        run: |
+          pip install pymupdf
+          sudo apt-get update
+          sudo apt-get install -y tesseract-ocr tesseract-ocr-ita
+
+      - name: Trasforma il PDF in immagini
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: python3 -m src.lettore
+
+      - name: Salva nel repo
+        run: |
+          git config user.name "spesacina-bot"
+          git config user.email "bot@spesacina.local"
+          git add -f pg/ || true
+          if git diff --staged --quiet; then
+            echo "Niente da salvare."
+          else
+            git commit -m "Prova lettore: immagini del volantino"
+            git push
+          fi
