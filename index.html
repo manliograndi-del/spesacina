@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spesacina</title>
+<style>
+:root{
+  --carta:#FFFFFF;
+  --pannello:#F6F5F2;
+  --inchiostro:#1B1B1A;
+  --tenue:#6E6C66;
+  --linea:#E5E3DD;
+  --linea-forte:#CFCCC4;
+  --rosso:#D40D2B;
+  --su-rosso:#FFFFFF;
+  --verde:#1E7A4B;
+  --verde-tenue:#E6F3EC;
+  --ambra:#8A5A08;
+  --ambra-tenue:#FCF2DE;
+  --blu:#2B4A7A;
+  --f-testo: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-prezzo: "Oswald", "Arial Narrow", ui-sans-serif, sans-serif;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--carta);color:var(--inchiostro);
+  font-family:var(--f-testo);font-size:16px;line-height:1.45;
+  -webkit-text-size-adjust:100%;
+}
+.guscio{max-width:800px;margin:0 auto;padding:0 15px 60px}
+header{padding:18px 0 2px}
+.riga-alta{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.marca{display:flex;align-items:center;gap:11px;color:inherit;text-decoration:none}
+.segno{flex:none;width:33px;height:41px}
+.segno svg{display:block;width:100%;height:100%}
+.segno .manici{fill:none;stroke:var(--rosso);stroke-width:3.2;stroke-linecap:round}
+.segno .borsa{fill:var(--rosso)}
+.segno text{fill:var(--su-rosso);font-family:var(--f-prezzo);font-weight:700;font-size:20px}
+h1{font-family:var(--f-prezzo);font-weight:700;font-size:27px;line-height:1.05;margin:0}
+.sotto-marca{display:block;color:var(--tenue);font-size:13px;margin-top:2px}
+.barra{
+  position:sticky;top:0;z-index:20;background:var(--carta);
+  padding:11px 0 9px;border-bottom:1.5px solid var(--linea);margin-top:13px;
+}
+.tasti{display:flex;flex-wrap:wrap;gap:6px}
+.tasto{
+  background:var(--carta);border:1.5px solid var(--linea-forte);border-radius:10px;
+  padding:6px 12px;font-size:14px;font-weight:600;cursor:pointer;
+  min-height:34px;font-family:inherit;color:var(--inchiostro);
+}
+.tasto[aria-pressed="true"]{background:var(--rosso);border-color:var(--rosso);color:var(--su-rosso)}
+.tasto.agg{border-style:dashed;color:var(--tenue);font-weight:500}
+.fascia{
+  font-family:var(--f-prezzo);text-transform:uppercase;letter-spacing:.08em;
+  font-size:12px;font-weight:600;color:var(--tenue);margin:22px 0 8px;
+}
+.prezzo-riga{
+  display:grid;grid-template-columns:1fr auto;gap:2px 14px;
+  background:var(--carta);border:1.5px solid var(--linea);border-radius:16px;
+  padding:10px 13px 12px;margin-top:8px;
+}
+.prezzo-riga.vince{background:var(--verde-tenue);border:2px solid var(--verde)}
+.prezzo-riga .coda{
+  grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:0 0 4px;
+}
+.prezzo-riga .dati{grid-column:1;min-width:0}
+.prezzo-riga .nome{margin:2px 0 0;font-size:16px;font-weight:500;line-height:1.25}
+.prezzo-riga .nome .marca{
+  display:block;font-size:12.5px;font-weight:700;letter-spacing:.07em;
+  text-transform:uppercase;color:var(--inchiostro);margin-bottom:1px;
+}
+.prezzo-riga .sotto{margin:4px 0 0;color:var(--tenue);font-size:13.5px}
+.prezzo-riga .sotto b{color:var(--inchiostro);font-weight:600}
+.prezzo-riga .val{
+  grid-column:2;align-self:center;text-align:right;
+  display:flex;flex-direction:column;align-items:flex-end;gap:4px;white-space:nowrap;
+}
+.prezzo-riga .val .p1,.prezzo-riga .val .p2{display:block;margin:0;white-space:nowrap}
+.prezzo-riga .val .n{
+  display:inline-block;font-family:var(--f-prezzo);font-size:26px;
+  font-weight:700;color:var(--rosso);font-variant-numeric:tabular-nums;
+}
+.prezzo-riga .val .pz{
+  display:inline-block;font-family:var(--f-prezzo);font-size:15px;
+  font-weight:600;font-variant-numeric:tabular-nums;color:var(--inchiostro);
+}
+.prezzo-riga .val .u,.prezzo-riga .val .et{
+  display:inline-block;font-size:13px;font-weight:600;color:var(--tenue);
+  margin-left:4px;
+}
+.marchio{
+  display:inline-flex;align-items:center;border-radius:99px;
+  padding:5px 13px;font-size:13px;font-weight:700;letter-spacing:.02em;
+  background:#FFFFFF;border:1px solid var(--linea-forte);color:var(--inchiostro);
+  line-height:1.1;white-space:nowrap;height:24px;
+}
+.bollo{
+  display:inline-flex;align-items:center;height:24px;padding:0 11px;
+  border-radius:99px;font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;
+  font-weight:700;
+}
+.bollo.meno{background:var(--verde);color:var(--carta);text-transform:none;letter-spacing:0}
+.bollo.cond{background:var(--ambra-tenue);color:var(--ambra);text-transform:none;letter-spacing:0}
+.sconto{
+  display:inline-flex;align-items:center;height:24px;padding:0 9px;border-radius:99px;
+  background:var(--inchiostro);color:var(--carta);
+  font-family:var(--f-prezzo);font-size:12.5px;font-weight:700;
+}
+.giorni{
+  display:inline-flex;align-items:center;gap:5px;color:var(--blu);
+  font-size:11px;font-weight:700;font-variant-numeric:tabular-nums;
+}
+.giorni.poco{color:var(--ambra)}
+.vuoto{
+  color:var(--tenue);font-size:14.5px;margin:14px 0 0;
+  background:var(--pannello);border-radius:20px;padding:16px;
+}
+footer{margin-top:40px;text-align:center;color:var(--tenue);font-size:12.5px}
+</style>
+</head>
+<body>
+<div class="guscio">
+  <header>
+    <div class="riga-alta">
+      <a class="marca" href="./">
+        <span class="segno" aria-hidden="true">
+          <svg viewBox="6.5 3.4 31 38.6">
+            <path class="manici" d="M15.5 15V11.5a6.5 6.5 0 0 1 13 0V15"/>
+            <path class="borsa" d="M8.5 14H35.5a2 2 0 0 1 2 2.2L35.8 39.2a3 3 0 0 1-3 2.8H11.2a3 3 0 0 1-3-2.8L6.5 16.2a2 2 0 0 1 2-2.2Z"/>
+            <text x="22" y="36.5" text-anchor="middle">S</text>
+          </svg>
+        </span>
+        <span class="nomi">
+          <h1>Spesacina</h1>
+          <span class="sotto-marca">Offerte dai volantini</span>
+        </span>
+      </a>
+    </div>
+  </header>
+
+  <div class="barra">
+    <div class="tasti" id="tasti" role="group" aria-label="Scegli il prodotto"></div>
+  </div>
+
+  <div id="risultato"></div>
+
+  <footer>Prezzi letti dai volantini dei supermercati. Verifica in negozio.</footer>
+</div>
+
+<script>
+const DATI = { offerte: [] };
+
+function carica() {
+  fetch("./dati/offerte.json", { cache: "no-store" })
+    .then(r => r.ok ? r.json() : Promise.reject(new Error("JSON non trovato")))
+    .then(j => {
+      DATI.offerte = j.offerte || [];
+      disegnaTasti();
+    })
+    .catch(e => {
+      document.getElementById("risultato").innerHTML =
+        '<p class="vuoto">Non riesco a leggere <b>dati/offerte.json</b>. ' +
+        'Controlla che il file ci sia e che sia JSON valido.<br><small>' +
+        e.message + '</small></p>';
+    });
+}
+
+function euro(n) {
+  return n.toFixed(2).replace(".", ",");
+}
+
+function oggi() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function giorniMancanti(fino) {
+  const d = new Date(fino + "T12:00:00");
+  const t = new Date();
+  const diff = Math.round((d - t) / 86400000);
+  return diff;
+}
+
+function categorie() {
+  const set = new Set();
+  DATI.offerte.forEach(o => set.add(o.cat));
+  return Array.from(set).sort();
+}
+
+let scelta = null;
+
+function disegnaTasti() {
+  const t = document.getElementById("tasti");
+  t.innerHTML = "";
+  categorie().forEach(c => {
+    const b = document.createElement("button");
+    b.className = "tasto";
+    b.textContent = c;
+    b.type = "button";
+    b.setAttribute("aria-pressed", scelta === c ? "true" : "false");
+    b.onclick = () => {
+      scelta = (scelta === c) ? null : c;
+      disegnaTasti();
+      disegnaOfferte();
+    };
+    t.appendChild(b);
+  });
+}
+
+function disegnaOfferte() {
+  const r = document.getElementById("risultato");
+  if (!scelta) {
+    r.innerHTML = '<p class="vuoto">Tocca un prodotto qui sopra per vedere dove costa meno.</p>';
+    return;
+  }
+  const elenco = DATI.offerte
+    .filter(o => o.cat === scelta)
+    .sort((a, b) => a.unitario - b.unitario);
+
+  if (!elenco.length) {
+    r.innerHTML = '<p class="vuoto">Nessuna offerta per questo prodotto.</p>';
+    return;
+  }
+
+  const ogg = oggi();
+  const valideOggi = elenco.filter(o => o.inizio <= ogg && o.fino >= ogg);
+  const idVincitore = valideOggi.length ? valideOggi[0].url : null;
+
+  r.innerHTML = "";
+  elenco.forEach(o => {
+    const card = document.createElement("article");
+    card.className = "prezzo-riga";
+    if (o.url === idVincitore) card.classList.add("vince");
+
+    const cond = (o.bolli || []).map(b =>
+      '<span class="bollo cond">' + b + '</span>').join("");
+
+    const sconto = o.sconto
+      ? '<span class="sconto">−' + o.sconto + '%</span>'
+      : "";
+
+    const gg = giorniMancanti(o.fino);
+    let giorniHtml = "";
+    if (gg >= 0 && gg <= 7) {
+      giorniHtml = '<span class="giorni' + (gg <= 3 ? " poco" : "") + '">' +
+        gg + (gg === 1 ? " giorno" : " giorni") + '</span>';
+    } else if (o.inizio > ogg) {
+      giorniHtml = '<span class="giorni">dal ' + o.inizio.slice(8, 10) +
+        "/" + o.inizio.slice(5, 7) + '</span>';
+    }
+
+    const marcaHtml = o.marca
+      ? '<span class="marca">' + o.marca + '</span>'
+      : "";
+    const nome = o.nome || o.pro;
+    const note = o.note ? '<p class="sotto">' + o.note + '</p>' : "";
+
+    const vincitore = o.url === idVincitore
+      ? '<span class="bollo meno">il meno caro valido oggi</span>'
+      : "";
+
+    card.innerHTML =
+      '<p class="coda">' +
+        '<span class="marchio">' + o.ins + '</span>' +
+        vincitore + sconto + cond +
+      '</p>' +
+      '<div class="dati">' +
+        '<p class="nome">' + marcaHtml + nome + '</p>' +
+        note +
+      '</div>' +
+      '<div class="val">' +
+        '<span class="p1"><span class="n">' + euro(o.unitario) + '</span>' +
+          '<span class="u">/ ' + (o.fmt.startsWith("al kg") ? "kg" : "unità") + '</span></span>' +
+        '<span class="p2"><span class="pz">' + euro(o.prezzo) + '</span>' +
+          '<span class="et fmt">' + o.fmt + '</span></span>' +
+      '</div>';
+    r.appendChild(card);
+  });
+}
+
+carica();
+</script>
+</body>
+</html>
